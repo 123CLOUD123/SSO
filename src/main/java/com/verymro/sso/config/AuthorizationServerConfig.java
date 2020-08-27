@@ -84,6 +84,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		
+//		endpoints.tokenStore(tokenStore()) // 配置存储token的方式(默认InMemoryTokenStore)
 		endpoints.tokenStore(tokenStore()) // 配置存储token的方式(默认InMemoryTokenStore)
 //				.accessTokenConverter(jwtAccessTokenConverter())		// JWT token store
 				.allowedTokenEndpointRequestMethods(HttpMethod.GET,HttpMethod.POST)

@@ -37,17 +37,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
 //    }
 	
-	@Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		super.configure(auth);
-//		auth.authenticationProvider(provider);
-		auth.userDetailsService(userService); 
-		
-		
-//		auth
-//	    .userDetailsService(userService)
-//	    .passwordEncoder(passwordEncoder());
-    }
+//	@Override
+//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+//		super.configure(auth);
+////		auth.authenticationProvider(provider);
+//		auth.userDetailsService(userService); 
+//    }
 	
 //	@Override
 //	protected void configure(AuthenticationManagerBuilder auth)
@@ -59,19 +54,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
     protected void configure(HttpSecurity http) throws Exception{
 		
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-	        .and()
-		    .requestMatchers().anyRequest()
-		    .and()
-		    .authorizeRequests().antMatchers("/oauth/**", "/oauth/**/**").permitAll()
-		    .and()
-		    .anonymous()
-		    .and()
-		    .authorizeRequests()
-		    .antMatchers("/rest/test/**").authenticated();//配置访问控制，必须认证过后才可以访问
+//		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+//	        .and()
+//		    .requestMatchers().anyRequest()
+//		    .and()
+//		    .authorizeRequests().antMatchers("/oauth/**", "/oauth/**/**").permitAll()
+//		    .and()
+//		    .anonymous()
+//		    .and()
+//		    .authorizeRequests()
+//		    .antMatchers("/rest/test/**").authenticated();//配置访问控制，必须认证过后才可以访问
+//		
 		
-		
-//		super.configure(http);
+		super.configure(http);
 //		http.formLogin()
 //			.and()
 ////			.authorizeRequests().antMatchers("/", "/rest/test/test").permitAll()
