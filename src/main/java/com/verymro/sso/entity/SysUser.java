@@ -20,42 +20,44 @@ public class SysUser implements UserDetails {
 	
 	private String password;
 	
-//	private Boolean ccountNonExpired;
-//	
-//	private Boolean isAccountNonLocked;
-//	
-//	private Boolean isCredentialsNonExpired;
-//	
-//	private Boolean isEnabled;
+	private Boolean isAccountNonExpired;
+	
+	private Boolean isAccountNonLocked;
+	
+	private Boolean isCredentialsNonExpired;
+	
+	private Boolean isEnabled;
+	
+	private Collection<GrantedAuthority> authorities;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return null;
+		return authorities;
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return isAccountNonExpired;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
-		return false;
+		return isAccountNonLocked;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return isCredentialsNonExpired;
 	}
 
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
-		return false;
+		return isEnabled;
 	}
 	
 }

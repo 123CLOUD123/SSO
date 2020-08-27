@@ -1,7 +1,12 @@
 package com.verymro.sso.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,7 +21,7 @@ import com.verymro.sso.service.TestService;
 
 
 @Service
-public class TestServiceImpl implements UserDetailsService {
+public class UserServiceImpl implements UserDetailsService {
 	
 	@Resource
 	private TestMapper testMapper;
@@ -31,12 +36,25 @@ public class TestServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-//		return null;
 		
-//		return new SocialUser(username, userInfo.getPassword(), true, true, true, true, authorities);
+		SysUser user = new SysUser();
+		user.setId(2L);
+		user.setUsername("zh");
+		user.setPassword("123");
+		user.setAuthorities(defaultAuthorities());
+		user.setIsAccountNonLocked(true);
+		user.setIsAccountNonExpired(true);
+		user.setIsCredentialsNonExpired(true);
+		user.setIsEnabled(true);
+		return user;
 		
-		return new SysUser(1L, "username", "password");
+	}
+	
+	private List<GrantedAuthority> defaultAuthorities() {
+		List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>();       
+		authList.add(new SimpleGrantedAuthority("ROLE_USER"));      
+		authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));     
+		return authList;
 	}
 	
 }

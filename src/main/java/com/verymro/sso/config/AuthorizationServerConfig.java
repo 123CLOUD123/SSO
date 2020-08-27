@@ -12,6 +12,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -27,7 +28,7 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import com.baomidou.mybatisplus.core.toolkit.ArrayUtils;
-import com.verymro.sso.service.impl.TestServiceImpl;
+import com.verymro.sso.service.impl.UserServiceImpl;
 
 /**
  * 授权认证服务类
@@ -39,54 +40,55 @@ import com.verymro.sso.service.impl.TestServiceImpl;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-//	@Autowired
-//    @Qualifier("dataSource")
-//    private DataSource dataSource;
-	
 	/**
 	 * 权限管理器
 	 */
-	@Autowired
-	private AuthenticationManager authenticationManager;
+//	@Autowired
+//	private AuthenticationManager authenticationManager;
 	
 	@Autowired
-	private TestServiceImpl ts;
+	private UserServiceImpl userService;
 	
 	@Autowired
 	private RedisConnectionFactory connectionFactory;
 	
+	@Bean
+	public NoOpPasswordEncoder passwordEncoder() {
+        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
+    }
+	
 //	@Autowired
 //	private PasswordEncoder passwordEncoder;
 	
-//	private OAuth2Property oauth2 = new OAuth2Property();
-//	private OAuth2ClientProperty[] clients = new OAuth2ClientProperty[];
-	
+	/**
+	 * token 存储方式
+	 */
 	@Bean
 	public TokenStore tokenStore() {
         return new RedisTokenStore(connectionFactory);
     }
+	
+//	@Bean
+//    public TokenStore tokenStore() {
+//        return new JwtTokenStore(jwtAccessTokenConverter());
+//    }
+//	
+//	@Bean
+//    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+//        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+//        converter.setSigningKey("123");
+//        return converter;
+//    }
 
-//	@Override
-//	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-//		endpoints.authenticationManager(authenticationManager).tokenStore(tokenStore());
-//	}
 	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-//		endpoints
-//        .authenticationManager(authenticationManager)
-//        .userDetailsService(ts);
-		
-//		endpoints.authenticationManager(authenticationManager)
-//        .userDetailsService(ts)		// XXX 待改
-//        .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
-//        .accessTokenConverter(jwtAccessTokenConverter())
-//        .tokenStore(new JwtTokenStore(jwtAccessTokenConverter()));
 		
 		endpoints.tokenStore(tokenStore()) // 配置存储token的方式(默认InMemoryTokenStore)
+//				.accessTokenConverter(jwtAccessTokenConverter())		// JWT token store
 				.allowedTokenEndpointRequestMethods(HttpMethod.GET,HttpMethod.POST)
-		        .authenticationManager(authenticationManager) // 密码模式，必须配置AuthenticationManager，不然不生效
-		        .userDetailsService(ts); // 密码模式，这里得配置UserDetailsService
+//		        .authenticationManager(authenticationManager) // 密码模式，必须配置AuthenticationManager，不然不生效
+		        .userDetailsService(userService); // 密码模式，这里得配置UserDetailsService
 
 		/*
 		 * pathMapping用来配置端点URL链接，有两个参数，都将以 "/" 字符为开始的字符串
@@ -95,19 +97,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		 * 
 		 * customPath：你要进行替代的URL链接
 		 */
-		endpoints.pathMapping("/oauth/token", "/oauth/mytoken");
+//		endpoints.pathMapping("/oauth/token", "/oauth/mytoken");
 
 	}
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-//		security
-//			.allowFormAuthenticationForClients()
-//			.tokenKeyAccess("permitAll()")
-//			.checkTokenAccess("isAuthenticated()");
 		security
         	.allowFormAuthenticationForClients()
         	.tokenKeyAccess("permitAll()")
+//        	.tokenKeyAccess("isAuthenticated()")
         	.checkTokenAccess("permitAll()");
 	}
 
@@ -141,22 +140,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //        }
 		
 		clients.inMemory() // 使用in-memory存储
-        .withClient("clientId").secret("123456")	// client 信息
-        .accessTokenValiditySeconds(100) // 发出去的令牌有效时间(秒)
-        .authorizedGrantTypes("authorization_code", "client_credentials", "password", "refresh_token") // 该client允许的授权类型
-        .scopes("all", "read", "write") // 允许的授权范围(如果是all，则请求中可以不要scope参数，否则必须加上scopes中配置的)
-        .autoApprove(true); // 自动审核
+	        .withClient("client").secret("secret")	// client 信息
+	        .redirectUris("http://www.baidu.com")
+	        .accessTokenValiditySeconds(1000) // 发出去的令牌有效时间(秒)
+	//        .authorizedGrantTypes("authorization_code", "client_credentials", "password", "refresh_token") // 该client允许的授权类型
+//	        .authorizedGrantTypes("implicit")
+	        .authorizedGrantTypes("authorization_code")
+	//        .scopes("all", "read", "write") // 允许的授权范围(如果是all，则请求中可以不要scope参数，否则必须加上scopes中配置的)
+	        .scopes("app", "test", "test222")
+	        .autoApprove(true); // 自动审核
 	}
 	
-	
-//	private JwtAccessTokenConverter jwtAccessTokenConverter() {
-//        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-//        jwtAccessTokenConverter.setKeyPair(keyPair());
-//        return jwtAccessTokenConverter;
-//    }
-//	
-//	private KeyPair keyPair() {
-//        return new KeyStoreKeyFactory(new ClassPathResource("xmall-auth.jks"), "123456".toCharArray()).getKeyPair("xmall-auth", "123456".toCharArray());
-//    }
 
 }
