@@ -52,16 +52,18 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 //           .antMatchers("/user","/res/**")
 //           .authenticated();
     		
-    		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-	        .and()
-		    .requestMatchers().anyRequest()
-		    .and()
-		    .authorizeRequests().antMatchers("/oauth/**", "/oauth/**/**").permitAll()
-		    .and()
-		    .anonymous()
-		    .and()
-		    .authorizeRequests()
-		    .antMatchers("/rest/test/**").authenticated();//配置访问控制，必须认证过后才可以访问
+    	super.configure(http);
+    	
+//    		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+//	        .and()
+//		    .requestMatchers().anyRequest()
+//		    .and()
+//		    .authorizeRequests().antMatchers("/oauth/**", "/oauth/**/**", "/rest/test/test").permitAll()
+//		    .and()
+//		    .anonymous()
+//		    .and()
+//		    .authorizeRequests()
+//		    .antMatchers("/rest/test/**").authenticated();//配置访问控制，必须认证过后才可以访问
 
     		
     		

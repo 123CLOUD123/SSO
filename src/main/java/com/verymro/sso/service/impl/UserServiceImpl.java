@@ -19,7 +19,6 @@ import com.verymro.sso.entity.Test;
 import com.verymro.sso.mapper.TestMapper;
 import com.verymro.sso.service.TestService;
 
-
 @Service
 public class UserServiceImpl implements UserDetailsService {
 	

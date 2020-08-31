@@ -87,9 +87,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //		endpoints.tokenStore(tokenStore()) // 配置存储token的方式(默认InMemoryTokenStore)
 		endpoints.tokenStore(tokenStore()) // 配置存储token的方式(默认InMemoryTokenStore)
 //				.accessTokenConverter(jwtAccessTokenConverter())		// JWT token store
-				.allowedTokenEndpointRequestMethods(HttpMethod.GET,HttpMethod.POST)
+				.allowedTokenEndpointRequestMethods(HttpMethod.GET,HttpMethod.POST);
 //		        .authenticationManager(authenticationManager) // 密码模式，必须配置AuthenticationManager，不然不生效
-		        .userDetailsService(userService); // 密码模式，这里得配置UserDetailsService
+//		        .userDetailsService(userService); // 密码模式，这里得配置UserDetailsService
 
 		/*
 		 * pathMapping用来配置端点URL链接，有两个参数，都将以 "/" 字符为开始的字符串
@@ -143,13 +143,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		clients.inMemory() // 使用in-memory存储
 	        .withClient("client").secret("secret")	// client 信息
 	        .redirectUris("http://www.baidu.com")
+//	        .redirectUris("http://localhost:8086")
 	        .accessTokenValiditySeconds(1000) // 发出去的令牌有效时间(秒)
 	//        .authorizedGrantTypes("authorization_code", "client_credentials", "password", "refresh_token") // 该client允许的授权类型
 //	        .authorizedGrantTypes("implicit")
 	        .authorizedGrantTypes("authorization_code")
 	//        .scopes("all", "read", "write") // 允许的授权范围(如果是all，则请求中可以不要scope参数，否则必须加上scopes中配置的)
 	        .scopes("app", "test", "test222")
-	        .autoApprove(true); // 自动审核
+	        .autoApprove(false); // 自动审核
 	}
 	
 
