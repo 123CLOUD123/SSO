@@ -22,7 +22,7 @@ import com.verymro.sso.service.impl.UserServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-@Order(1)
+@Order(10)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 //    @Bean
@@ -50,48 +50,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)
 			throws Exception {
-		auth.inMemoryAuthentication().withUser("cy")
-				.password(passwordEncoder.encode("123456")).roles("USER_123");
+//		auth.inMemoryAuthentication().withUser("cy")
+//				.password(passwordEncoder.encode("123456")).roles("USER_123", "ADMIN", "SYSTEM").authorities("123", "333");
+		auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
 	}
 	
 	@Override
-    protected void configure(HttpSecurity http) throws Exception{
+    protected void configure(HttpSecurity http) throws Exception {
+//		super.configure(http);
+		http.csrf().disable()
+			.authorizeRequests()
+			.antMatchers("/oauth/**").permitAll()
+			.anyRequest().authenticated()
+			.and().formLogin();
 		
-//		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-//	        .and()
-//		    .requestMatchers().anyRequest()
-//		    .and()
-//		    .authorizeRequests().antMatchers("/oauth/**", "/oauth/**/**").permitAll()
-//		    .and()
-//		    .anonymous()
-//		    .and()
-//		    .authorizeRequests()
-//		    .antMatchers("/rest/test/**").authenticated();//配置访问控制，必须认证过后才可以访问
-//		
-		
-		super.configure(http);
-//		http.csrf().disable();
-//		http.formLogin()
-//			.and()
-////			.authorizeRequests().antMatchers("/", "/rest/test/test").permitAll()
-////			.and()
-//			.authorizeRequests().anyRequest().authenticated()
-//			.and()
-//	        .csrf() //防止CSRF（跨站请求伪造）配置
-//	        .requireCsrfProtectionMatcher(new AntPathRequestMatcher("/oauth/authorize")).disable();
-		
-//		http.authorizeRequests()
-//	        .antMatchers( "/oauth/**","/swagger-ui.html")
-//	        .permitAll()
-//	        .and().authorizeRequests().and().csrf().disable();
-		
-//		http.antMatcher("/**")
-//		.requestMatchers()
-//		.antMatchers("/oauth/authorize**", "/login**", "/error**")
-//		.and()
-//		.authorizeRequests().anyRequest().authenticated()
-//		.and()
-//		.formLogin().permitAll();
     }
 
 

@@ -6,8 +6,10 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
@@ -20,7 +22,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -37,6 +41,7 @@ import com.verymro.sso.service.impl.UserServiceImpl;
  * @since 2020-08-25
  */
 @Configuration
+@Order(1)
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
@@ -57,6 +62,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
 	
+//	@Bean
+//	public OAuth2AuthenticationManager authenticationManager() {
+//		return new OAuth2AuthenticationManager();
+//	}
+	
 //	@Autowired
 //	private PasswordEncoder passwordEncoder;
 	
@@ -65,7 +75,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	 */
 	@Bean
 	public TokenStore tokenStore() {
-        return new RedisTokenStore(connectionFactory);
+//        return new RedisTokenStore(connectionFactory);
+		return new InMemoryTokenStore();
     }
 	
 //	@Bean
@@ -85,10 +96,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		
 //		endpoints.tokenStore(tokenStore()) // 配置存储token的方式(默认InMemoryTokenStore)
-		endpoints.tokenStore(tokenStore()) // 配置存储token的方式(默认InMemoryTokenStore)
+//		endpoints.tokenStore(tokenStore()) // 配置存储token的方式(默认InMemoryTokenStore)
 //				.accessTokenConverter(jwtAccessTokenConverter())		// JWT token store
+		endpoints
+				.tokenStore(tokenStore())
 				.allowedTokenEndpointRequestMethods(HttpMethod.GET,HttpMethod.POST);
-//		        .authenticationManager(authenticationManager) // 密码模式，必须配置AuthenticationManager，不然不生效
+//		        .authenticationManager(authenticationManager()); // 密码模式，必须配置AuthenticationManager，不然不生效
 //		        .userDetailsService(userService); // 密码模式，这里得配置UserDetailsService
 
 		/*
@@ -105,10 +118,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
 		security
-        	.allowFormAuthenticationForClients()
+        	.allowFormAuthenticationForClients()	// 主要是让/oauth/token支持client_id以及client_secret作登录认证
         	.tokenKeyAccess("permitAll()")
-//        	.tokenKeyAccess("isAuthenticated()")
         	.checkTokenAccess("permitAll()");
+//        	.tokenKeyAccess("isAuthenticated()")
+//        	.checkTokenAccess("isAuthenticated()");
 	}
 
 	@Override
@@ -143,13 +157,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		clients.inMemory() // 使用in-memory存储
 	        .withClient("client").secret("secret")	// client 信息
 	        .redirectUris("http://www.baidu.com")
+//	        .redirectUris("http://192.168.0.16:9091/app1/index.html")
 //	        .redirectUris("http://localhost:8086")
 	        .accessTokenValiditySeconds(1000) // 发出去的令牌有效时间(秒)
 	//        .authorizedGrantTypes("authorization_code", "client_credentials", "password", "refresh_token") // 该client允许的授权类型
 //	        .authorizedGrantTypes("implicit")
 	        .authorizedGrantTypes("authorization_code")
 	//        .scopes("all", "read", "write") // 允许的授权范围(如果是all，则请求中可以不要scope参数，否则必须加上scopes中配置的)
-	        .scopes("app", "test", "test222")
+	        .scopes("app", "test", "test222", "admin", "system", "purchase", "all")
 	        .autoApprove(false); // 自动审核
 	}
 	
