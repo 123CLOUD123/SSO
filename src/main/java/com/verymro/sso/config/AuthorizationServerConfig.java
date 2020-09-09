@@ -156,16 +156,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		
 		clients.inMemory() // 使用in-memory存储
 	        .withClient("client").secret("secret")	// client 信息
-	        .redirectUris("http://www.baidu.com")
+	        .redirectUris("http://www.baidu.com", "http://localhost:1105/Authorize", "http://localhost:3000/#/login", "http://192.168.1.5:8080/", "http://192.168.1.5:8088")
 //	        .redirectUris("http://192.168.0.16:9091/app1/index.html")
 //	        .redirectUris("http://localhost:8086")
 	        .accessTokenValiditySeconds(1000) // 发出去的令牌有效时间(秒)
 	//        .authorizedGrantTypes("authorization_code", "client_credentials", "password", "refresh_token") // 该client允许的授权类型
 //	        .authorizedGrantTypes("implicit")
-	        .authorizedGrantTypes("authorization_code")
+	        .authorizedGrantTypes("authorization_code", "client_credentials", "password", "refresh_token", "implicit")
 	//        .scopes("all", "read", "write") // 允许的授权范围(如果是all，则请求中可以不要scope参数，否则必须加上scopes中配置的)
 	        .scopes("app", "test", "test222", "admin", "system", "purchase", "all")
-	        .autoApprove(false); // 自动审核
+	        .autoApprove(true); // 自动审核
 	}
 	
 

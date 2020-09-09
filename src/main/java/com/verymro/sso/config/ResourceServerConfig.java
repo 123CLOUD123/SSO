@@ -1,6 +1,5 @@
 package com.verymro.sso.config;
 
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +16,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 @Configuration
-//@Order(2)
+@Order(2)
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
@@ -49,9 +48,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 		.and()
     	.csrf().disable()
+    	.httpBasic().disable()
     	.authorizeRequests()
     	.antMatchers("/rest/test", "/rest/test2").authenticated()
-    	.antMatchers("/error2").permitAll()
+    	.antMatchers("/error2", "/oauth/**").permitAll()
     	.anyRequest().authenticated()
     	.and().formLogin();
     	

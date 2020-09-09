@@ -2,9 +2,8 @@ package com.verymro.sso.rest;
 
 import java.io.IOException;
 
+
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.GetMapping;
