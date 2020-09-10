@@ -3,6 +3,7 @@ package com.verymro.sso.entity;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -66,19 +67,21 @@ public class SysClient implements ClientDetails {
 	@Override
 	public Set<String> getScope() {
 		// TODO Auto-generated method stub
-		return Set.of("app", "test", "user");
+		return new HashSet(Arrays.asList(new String[]{"app", "test", "user"}));
 	}
+	
 
 	@Override
 	public Set<String> getAuthorizedGrantTypes() {
 		// TODO Auto-generated method stub
-		return Set.of("authorization_code", "client_credentials", "password", "refresh_token", "implicit");
+//		return Set.of("authorization_code", "client_credentials", "password", "refresh_token", "implicit");
+		return new HashSet(Arrays.asList(new String[]{"authorization_code", "client_credentials", "password", "refresh_token", "implicit"}));
 	}
 	
 	@Override
 	public Set<String> getRegisteredRedirectUri() {
 		// TODO Auto-generated method stub
-		return Set.of(registeredRedirectUri);
+		return new HashSet(Arrays.asList(new String[]{registeredRedirectUri}));
 	}
 
 	@Override
