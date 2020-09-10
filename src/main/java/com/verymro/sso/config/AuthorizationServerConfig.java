@@ -32,6 +32,7 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import com.baomidou.mybatisplus.core.toolkit.ArrayUtils;
+import com.verymro.sso.service.impl.ClientServiceImpl;
 import com.verymro.sso.service.impl.UserServiceImpl;
 
 /**
@@ -56,6 +57,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Autowired
 	private RedisConnectionFactory connectionFactory;
+	
+	@Autowired
+	private ClientServiceImpl clientService;
 	
 	@Bean
 	public NoOpPasswordEncoder passwordEncoder() {
@@ -125,22 +129,22 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-//		clients.withClientDetails(clientDetailsService);
+		clients.withClientDetails(clientService);
 		
-		clients.inMemory() // 使用in-memory存储
-	        .withClient("client").secret("secret")	// client 信息
-	        .redirectUris("http://www.baidu.com", "http://localhost:1105/Authorize", "http://localhost:3000/#/login", "http://192.168.1.5:8080/", "http://192.168.1.5:8088")
-	        .accessTokenValiditySeconds(1000) // 发出去的令牌有效时间(秒)
-	        .authorizedGrantTypes("authorization_code", "client_credentials", "password", "refresh_token", "implicit")
-	        .scopes("app", "test", "test222", "admin", "system", "purchase", "all")
-	        .autoApprove(false)
-	        .and()
-	        .withClient("client2").secret("secret2")
-	        .redirectUris("http://www.baidu.com", "http://localhost:1105/Authorize", "http://localhost:3000/#/login", "http://192.168.1.5:8080/", "http://192.168.1.5:8088")
-	        .accessTokenValiditySeconds(1000)
-	        .authorizedGrantTypes("authorization_code", "client_credentials", "password", "refresh_token", "implicit")
-	        .scopes("app")
-	        .autoApprove(false); // 自动审核
+//		clients.inMemory() // 使用in-memory存储
+//	        .withClient("client").secret("secret")	// client 信息
+//	        .redirectUris("http://www.baidu.com", "http://localhost:1105/Authorize", "http://localhost:3000/#/login", "http://192.168.1.5:8080/", "http://192.168.1.5:8088")
+//	        .accessTokenValiditySeconds(1000) // 发出去的令牌有效时间(秒)
+//	        .authorizedGrantTypes("authorization_code", "client_credentials", "password", "refresh_token", "implicit")
+//	        .scopes("app", "test", "test222", "admin", "system", "purchase", "all")
+//	        .autoApprove(false)
+//	        .and()
+//	        .withClient("client2").secret("secret2")
+//	        .redirectUris("http://www.baidu.com", "http://localhost:1105/Authorize", "http://localhost:3000/#/login", "http://192.168.1.5:8080/", "http://192.168.1.5:8088")
+//	        .accessTokenValiditySeconds(1000)
+//	        .authorizedGrantTypes("authorization_code", "client_credentials", "password", "refresh_token", "implicit")
+//	        .scopes("app")
+//	        .autoApprove(false); // 自动审核
 	}
 	
 

@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(scanBasePackages = "com.verymro")
 @MapperScan(value={"com.verymro.sso.mapper"})
-
 public class JyssoApplication {
 
 	public static void main(String[] args) {

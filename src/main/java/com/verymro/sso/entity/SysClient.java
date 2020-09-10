@@ -13,6 +13,8 @@ import lombok.Data;
 
 @Data
 public class SysClient implements ClientDetails {
+	
+	private Long id;
 
 	// 客户端id
 	private String clientId;
@@ -64,7 +66,7 @@ public class SysClient implements ClientDetails {
 	@Override
 	public Set<String> getScope() {
 		// TODO Auto-generated method stub
-		return Collections.emptySet();
+		return Set.of("app", "test", "user");
 	}
 
 	@Override
@@ -82,7 +84,7 @@ public class SysClient implements ClientDetails {
 	@Override
 	public Collection<GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptySet();
 	}
 
 	@Override
