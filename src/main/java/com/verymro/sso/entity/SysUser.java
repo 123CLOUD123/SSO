@@ -5,6 +5,8 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,14 +22,19 @@ public class SysUser implements UserDetails {
 	
 	private String password;
 	
+	@TableField(exist = false)
 	private Boolean isAccountNonExpired;
 	
+	@TableField(exist = false)
 	private Boolean isAccountNonLocked;
 	
+	@TableField(exist = false)
 	private Boolean isCredentialsNonExpired;
 	
+	@TableField(exist = false)
 	private Boolean isEnabled;
 	
+	@TableField(exist = false)
 	private Collection<GrantedAuthority> authorities;
 
 	@Override

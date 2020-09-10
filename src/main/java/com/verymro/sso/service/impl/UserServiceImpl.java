@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,37 +17,33 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.verymro.sso.entity.SysUser;
 import com.verymro.sso.entity.Test;
+import com.verymro.sso.mapper.SysUserMapper;
 import com.verymro.sso.mapper.TestMapper;
 import com.verymro.sso.service.TestService;
 
 @Service
 public class UserServiceImpl implements UserDetailsService {
 	
-	@Resource
-	private TestMapper testMapper;
+	@Autowired
+	private SysUserMapper userMapper;
 	
-	public String test() {
-		
-		LambdaQueryWrapper<Test> qry = Wrappers.lambdaQuery();
-		Test t = testMapper.selectOne(qry);
-		
-		return t.getName();
-	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		LambdaQueryWrapper<SysUser> qry = Wrappers.lambdaQuery();
+		qry.eq(SysUser::getUsername, username);
+		SysUser user = userMapper.selectOne(qry);
+		if (null == user) {
+			throw new RuntimeException("无用户");
+		}
 		
-		SysUser user = new SysUser();
-		user.setId(2L);
-		user.setUsername("zh");
-		user.setPassword("123");
 		user.setAuthorities(defaultAuthorities());
 		user.setIsAccountNonLocked(true);
 		user.setIsAccountNonExpired(true);
 		user.setIsCredentialsNonExpired(true);
 		user.setIsEnabled(true);
-		return user;
 		
+		return user;
 	}
 	
 	private List<GrantedAuthority> defaultAuthorities() {

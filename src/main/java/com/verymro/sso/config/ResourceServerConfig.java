@@ -15,6 +15,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
+import com.verymro.sso.service.impl.UserServiceImpl;
+
 @Configuration
 @Order(2)
 @EnableResourceServer
@@ -22,6 +24,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 	@Autowired
 	private RedisConnectionFactory connectionFactory;
+	
+	@Autowired
+    private UserServiceImpl userService;
 	
 //	@Autowired
 //	private TokenStore tokenStore;
@@ -31,7 +36,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resource) throws Exception {
-		super.configure(resource);
+//		super.configure(resource);
 //		resource.stateless(true);
 		resource.tokenStore(tokenStore);
 	}
