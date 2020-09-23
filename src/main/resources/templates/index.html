@@ -1,0 +1,68 @@
+<html>
+	<head>
+		<title>首页</title>
+		<style type="text/css">
+			span {
+				background: #95c5ff;
+				width: 300px;
+				height: 160px;
+				margin: 14px;
+				text-align: center;
+				line-height: 160px;
+				font-weight: bold;
+				color: lavender;
+				font-size: 1.5em;
+				border-radius: 20px;
+				display: inline-block;
+			}
+			span:hover {
+				box-shadow: 0 0 8px black;
+				cursor: pointer;
+			}
+		/* 	.zt {
+				display: inline-block;
+				width: 200px;
+				height: 100px;
+				background: lightgray;
+			} */
+			.container {
+				background: #eee;
+				width: 100vw;
+				height: 100vh;
+				margin: 0;
+			}
+			body {
+				margin:0;
+			}
+			h1 {
+				text-align: center;
+				padding-top: 80px;
+				color: cornflowerblue;
+			}
+			.content {
+				margin: 0 auto;
+				width: 1000px;
+				padding-top: 40px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>嘉岩系统管理中心</h1>
+			<hr />
+			<div class="content">
+				<span class="zt" onclick="openZt()">中台系统</span>
+				<span>MRO系统</span>
+				<span>商城系统</span>
+			</div>
+		</div>
+		
+		
+		<script>
+			function openZt() {
+				window.open("http://192.168.0.1:3000/login?a=1")
+			}
+		</script>
+	</body>
+</html>
