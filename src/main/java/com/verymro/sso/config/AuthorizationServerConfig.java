@@ -1,6 +1,7 @@
 package com.verymro.sso.config;
 
 import java.security.KeyPair;
+import java.util.function.Function;
 
 import javax.sql.DataSource;
 
@@ -56,9 +57,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	private UserServiceImpl userService;
 	
 	@Autowired
-	private RedisConnectionFactory connectionFactory;
-	
-	@Autowired
 	private ClientServiceImpl clientService;
 	
 	@Bean
@@ -66,42 +64,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
 	
-//	@Bean
-//	public OAuth2AuthenticationManager authenticationManager() {
-//		return new OAuth2AuthenticationManager();
-//	}
-	
-//	@Autowired
-//	private PasswordEncoder passwordEncoder;
-	
 	/**
 	 * token 存储方式
 	 */
 	@Bean
 	public TokenStore tokenStore() {
-//        return new RedisTokenStore(connectionFactory);
 		return new InMemoryTokenStore();
     }
 	
-//	@Bean
-//    public TokenStore tokenStore() {
-//        return new JwtTokenStore(jwtAccessTokenConverter());
-//    }
-//	
-//	@Bean
-//    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-//        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-//        converter.setSigningKey("123");
-//        return converter;
-//    }
-
 	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		
-//		endpoints.tokenStore(tokenStore()) // 配置存储token的方式(默认InMemoryTokenStore)
-//		endpoints.tokenStore(tokenStore()) // 配置存储token的方式(默认InMemoryTokenStore)
-//				.accessTokenConverter(jwtAccessTokenConverter())		// JWT token store
 		endpoints
 				.tokenStore(tokenStore())
 				.allowedTokenEndpointRequestMethods(HttpMethod.GET,HttpMethod.POST);
@@ -130,21 +103,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.withClientDetails(clientService);
-		
-//		clients.inMemory() // 使用in-memory存储
-//	        .withClient("client").secret("secret")	// client 信息
-//	        .redirectUris("http://www.baidu.com", "http://localhost:1105/Authorize", "http://localhost:3000/#/login", "http://192.168.1.5:8080/", "http://192.168.1.5:8088")
-//	        .accessTokenValiditySeconds(1000) // 发出去的令牌有效时间(秒)
-//	        .authorizedGrantTypes("authorization_code", "client_credentials", "password", "refresh_token", "implicit")
-//	        .scopes("app", "test", "test222", "admin", "system", "purchase", "all")
-//	        .autoApprove(false)
-//	        .and()
-//	        .withClient("client2").secret("secret2")
-//	        .redirectUris("http://www.baidu.com", "http://localhost:1105/Authorize", "http://localhost:3000/#/login", "http://192.168.1.5:8080/", "http://192.168.1.5:8088")
-//	        .accessTokenValiditySeconds(1000)
-//	        .authorizedGrantTypes("authorization_code", "client_credentials", "password", "refresh_token", "implicit")
-//	        .scopes("app")
-//	        .autoApprove(false); // 自动审核
 	}
 	
 

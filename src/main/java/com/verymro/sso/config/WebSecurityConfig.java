@@ -50,9 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)
 			throws Exception {
-//		super.configure(auth);
-//		auth.inMemoryAuthentication().withUser("cy")
-//				.password(passwordEncoder.encode("123456")).roles("USER_123", "ADMIN", "SYSTEM").authorities("123", "333");
 		auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
 	}
 	
@@ -60,11 +57,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 //		super.configure(http);
 		http.csrf().disable()
+			.cors().disable()
 			.httpBasic().disable()
 			.authorizeRequests()
 			.antMatchers("/oauth/**").permitAll()
 			.anyRequest().authenticated()
-			.and().formLogin();
+			.and().formLogin().loginPage("http://localhost:3002/#/login");
     }
 
 

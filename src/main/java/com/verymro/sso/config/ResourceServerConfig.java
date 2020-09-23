@@ -45,33 +45,17 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
 	public void configure(HttpSecurity http) throws Exception {
     	http
-//    	.requestMatchers()
-//    	.antMatchers("/rest/**")
-//    	.and()
-//    	.anonymous().disable()
-    	
     	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 		.and()
     	.csrf().disable()
+    	.cors().disable()
     	.httpBasic().disable()
     	.authorizeRequests()
     	.antMatchers("/rest/test", "/rest/test2").authenticated()
-    	.antMatchers("/error2", "/oauth/**").permitAll()
+    	.antMatchers("/error2", "/", "/api/login", "/oauth/**").permitAll()
     	.anyRequest().authenticated()
-    	.and().formLogin();
-    	
-    	
-//    	http
-//        .csrf().disable()
-//        .exceptionHandling()
-//        .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-//    .and()
-//        .authorizeRequests()
-//        .anyRequest().hasRole("ADMIN")
-//        .and()
-//        .formLogin();
-//    .and()
-//        .httpBasic();
+//    	.and().formLogin();
+    	.and().formLogin().defaultSuccessUrl("http://localhost:3002/").failureUrl("http://localhost:3002/");
     	
     }
     
