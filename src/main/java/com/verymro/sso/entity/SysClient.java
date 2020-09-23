@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
@@ -32,6 +33,7 @@ public class SysClient implements ClientDetails {
 	// 刷新token 失效时间
 	private Integer refreshTokenValiditySeconds;
 	
+	// 是否自动跳过确认授权
 	private boolean isAutoApprove;
 	
 	@Override
@@ -39,7 +41,7 @@ public class SysClient implements ClientDetails {
 		// TODO Auto-generated method stub
 		return clientId;
 	}
-
+	
 	@Override
 	public Set<String> getResourceIds() {
 		// TODO Auto-generated method stub
