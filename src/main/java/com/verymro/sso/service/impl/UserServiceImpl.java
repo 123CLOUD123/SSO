@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.verymro.sso.entity.SysUser;
 import com.verymro.sso.entity.Test;
+import com.verymro.sso.entity.exception.JyException;
 import com.verymro.sso.mapper.SysUserMapper;
 import com.verymro.sso.mapper.TestMapper;
 import com.verymro.sso.service.TestService;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserDetailsService {
 		qry.eq(SysUser::getUsername, username);
 		SysUser user = userMapper.selectOne(qry);
 		if (null == user) {
-			throw new RuntimeException("无用户");
+			throw new JyException("无该用户账号");
 		}
 		
 		user.setAuthorities(defaultAuthorities());

@@ -1,5 +1,7 @@
 package com.verymro.sso.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +17,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.verymro.sso.service.TestService;
@@ -56,13 +60,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
 //		super.configure(http);
+		
+		http.headers().frameOptions().disable();
+		
 		http.csrf().disable()
 			.cors().disable()
+//			.headers().addHeaderWriter(new XFrameOptionsHeaderWriter(
+//	                new WhiteListedAllowFromStrategy(
+//	                        Arrays.asList("http://localhost:3002", "http://localhost",
+//	                                "http://localhost:3002/#/login"))))
+//			.and()
 			.httpBasic().disable()
 			.authorizeRequests()
 			.antMatchers("/oauth/**").permitAll()
 			.anyRequest().authenticated()
-			.and().formLogin().loginPage("http://localhost:3002/#/login");
+			.and().formLogin();
+//			.and().formLogin().loginPage("/login");
     }
 
 

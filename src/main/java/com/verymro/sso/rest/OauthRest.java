@@ -17,4 +17,11 @@ public class OauthRest {
 		return "123sfd";
 	}
 	
+	@GetMapping("login")
+	public void logina() {
+		int a = 1;
+		int b = 2;
+		int c = 3;
+	}
+	
 }

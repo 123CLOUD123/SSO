@@ -48,10 +48,17 @@
 			    <p>密&nbsp;&nbsp;&nbsp;&nbsp;码 : &nbsp;&nbsp;<input type="text" class="info" name="password" required /></p>
 			    <input type="submit" value="提 交" class="btn" />
 			</form>
+			<button onclick="getCookie()">测试</button>
 		</div>
 		
 		<script>
-			
+		
+		/* if (window != top) {  
+	        top.location.href = location.href;  
+	    } */
+			getCookie = function() {
+				console.log("---------------sdfsdfsdf--------------->>>>", window.location)
+			}
 		</script>
 	</body>
 </html>
