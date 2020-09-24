@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<title>嘉岩登录</title>
+		<style type="text/css">
+			.container {
+				background: #eee;
+				width: 100vw;
+				height: 100vh;
+				margin: 0;
+				text-align: center;
+			}
+			body {
+				margin:0;
+			}
+			h1 {
+				text-align: center;
+				padding-top: 80px;
+				color: rgb(6, 150,215);
+			}
+			input.info {
+				height: 36px;
+			    width: 320px;
+			    border-radius: 5px;
+			    border: 1px solid darkgray;
+			    font-size: 16px;
+			    padding-left: 8px;
+			}
+			input.info:focus {
+				border: 1px solid red;
+			}
+			input.btn {
+				padding: 8px 18px;
+			    border-radius: 5px;
+			    border: 1px solid darkgray;
+			    background-color: rgb(6, 150,215);
+			    color: white;
+			}
+			input.btn:hover {
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>嘉岩供应链</h1>
+			<form action="/login" method="post">
+			    <p>用户名 : &nbsp;&nbsp;<input type="text" name="username" class="info" required /></p>
+			    <p>密&nbsp;&nbsp;&nbsp;&nbsp;码 : &nbsp;&nbsp;<input type="text" class="info" name="password" required /></p>
+			    <input type="submit" value="提 交" class="btn" />
+			</form>
+		</div>
+		
+		<script>
+			
+		</script>
+	</body>
+</html>
