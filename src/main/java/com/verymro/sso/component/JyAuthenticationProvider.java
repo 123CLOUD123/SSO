@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,7 +48,7 @@ public class JyAuthenticationProvider implements AuthenticationProvider {
         //比较前端传入的密码明文和数据库中加密的密码是否相等
         if (!password.equals(user.getPassword())) {
             //发布密码不正确事件
-//            publisher.publishEvent(new UserLoginFailedEvent(authentication));
+            publisher.publishEvent(authentication);
             throw new JyException("password密码不正确");
         }
         
