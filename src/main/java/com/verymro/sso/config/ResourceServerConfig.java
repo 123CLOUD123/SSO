@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
+import com.verymro.sso.component.JyAuthExceptionEntryPoint;
 import com.verymro.sso.service.impl.UserServiceImpl;
 
 @Configuration
@@ -34,11 +35,15 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Autowired
 	private TokenStore tokenStore;
 	
+	@Autowired
+	private JyAuthExceptionEntryPoint jyAuthExceptionEntryPoint;
+	
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resource) throws Exception {
 //		super.configure(resource);
 //		resource.stateless(true);
 		resource.tokenStore(tokenStore);
+		resource.authenticationEntryPoint(jyAuthExceptionEntryPoint);
 	}
 	
 	
@@ -52,10 +57,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     	.httpBasic().disable()
     	.authorizeRequests()
     	.antMatchers("/rest/test", "/rest/test2").authenticated()
-    	.antMatchers("/error2", "/", "/api/login", "/oauth/**").permitAll()
+    	.antMatchers("/error2", "/", "/api/login", "/oauth/**", "/login").permitAll()
     	.anyRequest().authenticated()
-//    	.and().formLogin();
-    	.and().formLogin().defaultSuccessUrl("http://localhost:3002/").failureUrl("http://localhost:3002/");
+    	.and().formLogin().loginPage("/login");
+//    	.and().formLogin().defaultSuccessUrl("http://localhost:3002/").failureUrl("http://localhost:3002/");
     	
     }
     
